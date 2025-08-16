@@ -1,11 +1,13 @@
+# Use a specific version of Node.js
+FROM node:20-slim
 
-FROM node:20
-
-
+# Install system dependencies needed for Chrome
+# Grouping RUN commands reduces image layers
 RUN apt-get update && \
     apt-get install -y \
     wget \
     gnupg \
+    # Dependencies for Chrome
     libxshmfence-dev \
     libgbm-dev \
     libnss3 \
@@ -17,32 +19,35 @@ RUN apt-get update && \
     libdrm2 \
     xdg-utils \
     --no-install-recommends && \
-
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
-  
-    rm google-chrome-stable_current_amd64.deb && \
+    # Download and install Google Chrome
+    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/keyrings/google-chrome.gpg && \
+    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
+    apt-get update && \
+    apt-get install -y google-chrome-stable --no-install-recommends && \
+    # Clean up to reduce image size
     rm -rf /var/lib/apt/lists/*
 
-
+# Set the working directory
 WORKDIR /app
 
-
+# Copy package files and install ALL dependencies (including dev for building)
 COPY package*.json ./
-
-
 RUN npm install
 
-
+# Copy the rest of your application code
 COPY . .
 
-RUN chmod +x /app/node_modules/.bin/tsc
-
+# Build your TypeScript project
 RUN npm run build
 
+# Remove development dependencies to make the final image smaller
+RUN npm prune --production
+
+# Switch to a non-root user for security
 USER node
 
+# Expose the port your application will run on
 EXPOSE 3000
 
-
+# The command to start your application
 CMD [ "npm", "start" ]

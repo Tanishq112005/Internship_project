@@ -24,7 +24,7 @@ export async function scrapping(req: any, res: any, next: any) {
       }
       
     try {
-        browser = await puppeteer.launch();
+        browser = await puppeteer.launch(launchOptions);
         const page = await browser.newPage();
 
         page.on('console', msg => {
