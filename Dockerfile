@@ -1,46 +1,38 @@
-FROM node:20-slim
+# 1. Use the official Puppeteer image from Google's Chrome Team.
+# It includes Node.js, Chrome, and all necessary dependencies.
+FROM ghcr.io/puppeteer/puppeteer:21.5.0
 
-# 1. Install system dependencies for Chrome and wget
-RUN apt-get update && \
-    apt-get install -y \
-    wget \
-    # List of dependencies required by Chrome
-    libnss3 libgtk-3-0 libxss1 libasound2 libatk-bridge2.0-0 libcups2 libdrm2 libgbm-dev libxshmfence-dev \
-    --no-install-recommends && \
-    # 2. Download the official Google Chrome .deb package
-    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    # 3. Install the package using apt. Apt will handle any missing sub-dependencies.
-    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
-    # 4. Clean up to reduce final image size
-    rm google-chrome-stable_current_amd64.deb && \
-    rm -rf /var/lib/apt/lists/*
+# 2. Switch to the root user to install project dependencies.
+# The base image defaults to a non-root 'pptruser'.
+USER root
 
-# Set environment variables for Puppeteer
-# This tells Puppeteer where to find the browser we just installed.
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome
-# This is a crucial optimization: it prevents "npm install" from downloading
-# its own copy of Chromium, saving hundreds of MBs and build time.
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-
+# 3. Set the working directory.
 WORKDIR /app
 
-# Copy package files and install ALL dependencies needed for the build
-COPY package*.json ./
-RUN npm install
+# The base image already has Puppeteer installed globally.
+# The ENV var below prevents npm from trying to re-download Chromium.
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
-# Copy the rest of your application code
+# 4. Copy your package files and install your app's dependencies.
+COPY package*.json ./
+# Use --ignore-scripts to prevent any potential post-install issues
+# and ensure a clean install of only your listed dependencies.
+RUN npm install --ignore-scripts
+
+# 5. Copy the rest of your application code.
 COPY . .
 
-# Build your TypeScript project
+# 6. Build your TypeScript project.
 RUN npm run build
 
-# Remove development dependencies to make the final image smaller
+# 7. (Optional but recommended) Prune dev dependencies.
 RUN npm prune --production
 
-# Switch to a non-root user for better security
-USER node
+# 8. Switch back to the non-root user for security.
+USER pptruser
 
+# 9. Expose the application port.
 EXPOSE 3000
 
-# Command to start the application
+# 10. Define the command to start your app.
 CMD [ "npm", "start" ]
