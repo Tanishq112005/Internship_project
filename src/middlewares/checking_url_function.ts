@@ -11,6 +11,7 @@ function checker(url : string) : boolean {
 export  function validator(req : any , res : any , next : any){
     const {url} = req.body ; 
     if(checker(url)){
+        console.log("ok") ; 
         next() ; 
     }
     else{

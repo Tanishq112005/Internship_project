@@ -1,13 +1,13 @@
 import axios from "axios";
 import * as cheerio from 'cheerio';
 
-export async function scrapping(req : any , res : any ){
+export async function scrapping(req : any , res : any , next : any ){
     const {url} = req.body ; 
     try {
       // checking that site is up or not 
       // using the library axios for his 
       const response = await axios.get<string>(url, {
-        timeout: 8000,
+        timeout: 5000,
     });
 
        // now in the response.data , html of the page is there 
@@ -21,12 +21,18 @@ export async function scrapping(req : any , res : any ){
          description = $('p').first().text();
        }
 
-       res.status(200).json({
+       req.body = {
+        url : url , 
         brandName : brandName , 
-        description_html : description
-       }) ;
+        description : description
+       } ;
+    console.log("ok") ; 
+       // transferring to the next middleware for inserting the data into the database
+       next() ; 
     }
     catch(err){
-        console.log(err) ;
+        res.status(500).json({
+            msg : "Failed to analyze the website. It might be inaccessible or timed out."
+        }) ; 
     }
 }
