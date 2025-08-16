@@ -22,7 +22,7 @@ function scrapping(req, res, next) {
         console.log(`[Node.js] Attempting to scrape URL with Puppeteer: ${url}`);
         let browser;
         const launchOptions = {
-            headless: true, // or "new" for modern Puppeteer
+            headless: true,
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
@@ -30,10 +30,9 @@ function scrapping(req, res, next) {
                 '--disable-accelerated-2d-canvas',
                 '--no-first-run',
                 '--no-zygote',
-                // '--single-process', // This is often problematic, consider removing if issues persist
+                '--single-process',
                 '--disable-gpu'
             ]
-            // No executablePath property here!
         };
         if (process.env.PUPPETEER_EXECUTABLE_PATH) {
             launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;

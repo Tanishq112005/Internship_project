@@ -6,19 +6,19 @@ export async function scrapping(req: any, res: any, next: any) {
     console.log(`[Node.js] Attempting to scrape URL with Puppeteer: ${url}`);
     let browser;
     const launchOptions: any = {
-        headless: true, // or "new" for modern Puppeteer
+        headless: true,
         args: [
           '--no-sandbox', 
           '--disable-setuid-sandbox',
+         
           '--disable-dev-shm-usage',
           '--disable-accelerated-2d-canvas',
           '--no-first-run',
           '--no-zygote',
-          // '--single-process', // This is often problematic, consider removing if issues persist
+          '--single-process',
           '--disable-gpu'
         ]
-        // No executablePath property here!
-    };
+      };
       if (process.env.PUPPETEER_EXECUTABLE_PATH) {
         launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
       }

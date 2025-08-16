@@ -1,36 +1,48 @@
-# 1. Use the official Puppeteer image from Google's Chrome Team.
-FROM ghcr.io/puppeteer/puppeteer:21.5.0
 
-# 2. Switch to the root user to install project dependencies.
-USER root
+FROM node:20
 
-# 3. Set the working directory.
+
+RUN apt-get update && \
+    apt-get install -y \
+    wget \
+    gnupg \
+    libxshmfence-dev \
+    libgbm-dev \
+    libnss3 \
+    libxss1 \
+    libasound2 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libgtk-3-0 \
+    libdrm2 \
+    xdg-utils \
+    --no-install-recommends && \
+
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
+  
+    rm google-chrome-stable_current_amd64.deb && \
+    rm -rf /var/lib/apt/lists/*
+
+
 WORKDIR /app
 
-# The base image already has Puppeteer installed globally.
-# The ENV var below prevents npm from trying to re-download Chromium.
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 
-# 4. Copy your package files.
 COPY package*.json ./
 
-# 5. Install ALL dependencies (including devDependencies like typescript).
+
 RUN npm install
 
-# 6. Copy the rest of your application code.
+
 COPY . .
 
-# 7. Build your TypeScript project. Now `tsc` will be found.
+RUN chmod +x /app/node_modules/.bin/tsc
+
 RUN npm run build
 
-# 8. Prune dev dependencies AFTER the build is successful to shrink the final image.
-RUN npm prune --production
+USER node
 
-# 9. Switch back to the non-root user for security.
-USER pptruser
-
-# 10. Expose the application port.
 EXPOSE 3000
 
-# 11. Define the command to start your app.
+
 CMD [ "npm", "start" ]
