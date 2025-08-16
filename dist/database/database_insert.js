@@ -36,7 +36,7 @@ function inserting_in_database(req, res) {
             }
             else {
                 console.log(error);
-                return res.statu(500).json({
+                return res.status(500).json({
                     msg: "Some another error"
                 });
             }

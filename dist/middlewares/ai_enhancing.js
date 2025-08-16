@@ -17,7 +17,7 @@ const ai = new genai_1.GoogleGenAI({
 function buildPrompt(description) {
     return `You Have to enhance the given description into more detailed and more readable format the given descrpition is ${description}`;
 }
-function ai_testing(req, res) {
+function ai_testing(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a;
         const { brandName, description } = req.body;
@@ -32,7 +32,11 @@ function ai_testing(req, res) {
                 contents: [{ role: "user", parts: [{ text: prompt }] }],
             });
             const resultText = ((_a = response.text) === null || _a === void 0 ? void 0 : _a.trim()) || "AI did not provide a valid response.";
-            return res.json({ result: resultText });
+            req.body = {
+                brandName: brandName,
+                description: resultText
+            };
+            next();
         }
         catch (err) {
             console.error("GenAI error:", err);
