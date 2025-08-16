@@ -1,19 +1,25 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.client = void 0;
 const checking_url_function_1 = require("./middlewares/checking_url_function");
 const scrapping_website_1 = require("./middlewares/scrapping_website");
 const database_insert_1 = require("./database/database_insert");
 const supabase_js_1 = require("@supabase/supabase-js");
-const keys_1 = require("./keys");
 const all_the_values_from_database_1 = require("./database/all_the_values_from_database");
 const updating_the_value_1 = require("./database/updating_the_value");
 const deleting_from_database_1 = require("./database/deleting_from_database");
+const ai_enhancing_1 = __importDefault(require("./middlewares/ai_enhancing"));
 const express = require('express');
 const app = express();
+require('dotenv').config();
 app.use(express.json());
 const port = 3000;
-exports.client = (0, supabase_js_1.createClient)(keys_1.url, keys_1.public_key);
+const url = process.env.url;
+const public_key = process.env.public_key;
+exports.client = (0, supabase_js_1.createClient)(url, public_key);
 console.log("Database is connected");
 app.post("/", function (req, res) {
     res.status(200).json({
@@ -22,7 +28,7 @@ app.post("/", function (req, res) {
 });
 // main function of this route is to validate the website is there or not , scrapped the website and then insert in the
 // database 
-app.post("/analyizer", checking_url_function_1.validator, scrapping_website_1.scrapping, database_insert_1.inserting_in_database);
+app.post("/analyizer", checking_url_function_1.validator, scrapping_website_1.scrapping, ai_enhancing_1.default, database_insert_1.inserting_in_database);
 // this route for getting you the data of all the website 
 app.get("/website_data", all_the_values_from_database_1.getting_value);
 // this route for updating the data 

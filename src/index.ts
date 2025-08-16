@@ -3,18 +3,21 @@ import { validator } from "./middlewares/checking_url_function";
 import { scrapping } from "./middlewares/scrapping_website";
 import { inserting_in_database } from "./database/database_insert";
 import { createClient } from "@supabase/supabase-js";
-import { public_key, url } from "./keys";
+
 import { getting_value } from "./database/all_the_values_from_database";
 import { updating_the_value } from "./database/updating_the_value";
 import { deleting_from_database } from "./database/deleting_from_database";
+import ai_testing from "./middlewares/ai_enhancing";
 const express = require('express') ; 
 const app = express() ; 
-
+require('dotenv').config();
 app.use(express.json()) ; 
 const port = 3000 ; 
 
+const url : any = process.env.url ; 
+const public_key : any = process.env.public_key ;
 
-export const client =  createClient(url , public_key) ; 
+export const client =  createClient(url  , public_key) ; 
 console.log("Database is connected") ; 
 app.post("/" , function(req : any , res : any){
     res.status(200).json({
@@ -24,7 +27,7 @@ app.post("/" , function(req : any , res : any){
 
 // main function of this route is to validate the website is there or not , scrapped the website and then insert in the
 // database 
-app.post("/analyizer" , validator , scrapping , inserting_in_database) ; 
+app.post("/analyizer" , validator , scrapping , ai_testing ,  inserting_in_database) ; 
 
 // this route for getting you the data of all the website 
 app.get("/website_data" , getting_value) ; 

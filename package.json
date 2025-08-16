@@ -16,6 +16,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@google/genai": "^1.14.0",
     "@supabase/supabase-js": "^2.55.0",
     "@types/axios": "^0.9.36",
     "@types/cors": "^2.8.19",
@@ -26,6 +27,7 @@
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "mongoose": "^8.17.1",
+    "openai": "^5.12.2",
     "puppeteer-core": "^24.16.1",
     "typescript": "^5.9.2"
   }
