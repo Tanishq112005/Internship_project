@@ -8,21 +8,19 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npx tsc",
+    "build": "tsc",
     "start": "node dist/index.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.55.0",
-    "@types/axios": "^0.9.36",
-    "@types/cheerio": "^0.22.35",
-    "@types/express": "^5.0.3",
-    "@types/pg": "^8.15.5",
     "axios": "^1.11.0",
-    "cheerio": "^1.1.2",
-    "epress": "^0.0.1-security",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "puppeteer": "^24.16.2",
     "puppeteer-core": "^24.16.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.7",
+    "typescript": "^5.4.5"
   }
 }
