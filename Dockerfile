@@ -16,20 +16,23 @@ COPY package*.json ./
 # 5. Install ALL dependencies (including devDependencies like typescript).
 RUN npm install
 
-# 6. Copy the rest of your application code.
+# 6. FORCE EXECUTE PERMISSIONS - This is the new line to fix the weird issue.
+RUN chmod -R +x /app/node_modules/.bin
+
+# 7. Copy the rest of your application code.
 COPY . .
 
-# 7. Build your TypeScript project. Now `tsc` will be found.
+# 8. Build your TypeScript project.
 RUN npm run build
 
-# 8. Prune dev dependencies AFTER the build is successful to shrink the final image.
+# 9. Prune dev dependencies AFTER the build is successful to shrink the final image.
 RUN npm prune --production
 
-# 9. Switch back to the non-root user for security.
+# 10. Switch back to the non-root user for security.
 USER pptruser
 
-# 10. Expose the application port.
+# 11. Expose the application port.
 EXPOSE 3000
 
-# 11. Define the command to start your app.
+# 12. Define the command to start your app.
 CMD [ "npm", "start" ]
