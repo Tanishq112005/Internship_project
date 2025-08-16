@@ -16,25 +16,16 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@google/genai": "^1.13.0",
     "@supabase/supabase-js": "^2.55.0",
     "@types/axios": "^0.9.36",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/body-parser": "^1.19.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/nodemailer": "^6.4.17",
     "@types/puppeteer-core": "^5.4.0",
     "axios": "^1.11.0",
-    "bcryptjs": "^3.0.2",
-    "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.17.1",
-    "nodemailer": "^7.0.5",
     "puppeteer-core": "^24.16.1",
     "typescript": "^5.9.2"
   }
