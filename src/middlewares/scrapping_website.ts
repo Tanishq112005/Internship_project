@@ -1,15 +1,30 @@
 import puppeteer from 'puppeteer';
 
 export async function scrapping(req: any, res: any, next: any) {
+    // extracting thr url from the body
     const { url } = req.body;
     console.log(`[Node.js] Attempting to scrape URL with Puppeteer: ${url}`);
     let browser;
-
+    const launchOptions: any = {
+        headless: true,
+        args: [
+          '--no-sandbox', 
+          '--disable-setuid-sandbox',
+         
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--no-first-run',
+          '--no-zygote',
+          '--single-process',
+          '--disable-gpu'
+        ]
+      };
+      if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+        launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+      }
+      
     try {
-        browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
+        browser = await puppeteer.launch();
         const page = await browser.newPage();
 
         page.on('console', msg => {
@@ -19,12 +34,13 @@ export async function scrapping(req: any, res: any, next: any) {
        
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
         
+        // going to the url 
         await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
         
         const pageTitle = await page.title();
         console.log(`[Node.js] Page loaded with title: "${pageTitle}"`);
 
-    
+         // extracting the data 
         const extractedData = await page.evaluate(() => {
    
             const get_content = (selector: string, attribute?: string): string | null => {

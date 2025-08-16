@@ -4,6 +4,7 @@ import { client } from "..";
 
 export async  function deleting_from_database(req : any , res : any){
     const {id} = req.params ; 
+    console.log(id) ; 
     const { data, error } = await client.from('websites').delete().match({ id });
 
     if(error){
