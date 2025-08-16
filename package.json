@@ -10,9 +10,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@types/axios": "^0.9.36",
     "@types/cheerio": "^0.22.35",
     "@types/express": "^5.0.3",
     "@types/pg": "^8.15.5",
+    "axios": "^1.11.0",
     "cheerio": "^1.1.2",
     "epress": "^0.0.1-security",
     "express": "^5.1.0",

@@ -1,5 +1,6 @@
 import { validator } from "./middlewares/checking_url_function";
 import { connection_to_database } from "./database_connection";
+import { scrapping } from "./middlewares/scrapping_website";
 
 const express = require('express') ; 
 const app = express() ; 
@@ -14,7 +15,7 @@ app.post("/" , function(req : any , res : any){
     })
 }) ; 
 
-app.post("/analyizer" , validator , )
+app.post("/analyizer" , validator , scrapping) ; 
 app.listen(port , function() {
     console.log(`Server is starting on the port ${port}`) ; 
 })
