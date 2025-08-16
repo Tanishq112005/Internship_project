@@ -4,8 +4,9 @@ const clinet = new Client({
     connectionString : database_connection_string
 })
 
-clinet.connect() ; 
-
+export async function connection_to_database() {
+    await clinet.connect() ;
+}
 module.exports = {
     clinet
 }
