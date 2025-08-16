@@ -1,54 +1,35 @@
-# --- Stage 1: Build the TypeScript application ---
-    FROM node:20 as builder
+# 1. Use the official Puppeteer image from Google. It has Node, Chrome, and all dependencies.
+FROM ghcr.io/puppeteer/puppeteer:21.5.0
 
-    WORKDIR /app
-    
-    # Copy package files
-    COPY package*.json ./
-    
-    # Install ALL dependencies, including devDependencies like typescript
-    RUN npm install
-    
-    # Copy the rest of the source code
-    COPY . .
-    
-    # Run the build command to compile TypeScript to JavaScript
-    RUN npm run build
-    
-    
-    # --- Stage 2: Create the final, smaller production image ---
-    FROM node:20-slim
-    
-    # Install system dependencies needed for Chrome
-    RUN apt-get update && \
-        apt-get install -y \
-        wget \
-        # Dependencies for Chrome
-        libnss3 libatk-bridge2.0-0 libcups2 libdrm2 libgbm-dev libxshmfence-dev \
-        --no-install-recommends && \
-        # Download and install Google Chrome
-        wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-        apt-get install -y ./google-chrome-stable_current_amd64.deb && \
-        # Clean up
-        rm google-chrome-stable_current_amd64.deb && \
-        rm -rf /var/lib/apt/lists/*
-    
-    # Set the path for puppeteer-core to find Chrome
-    ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome
-    
-    WORKDIR /app
-    
-    # Copy only the necessary production dependencies from the 'builder' stage
-    COPY --from=builder /app/node_modules ./node_modules
-    COPY --from=builder /app/package*.json ./
-    
-    # Copy the compiled JavaScript code from the 'builder' stage
-    COPY --from=builder /app/dist ./dist
-    
-    # Switch to a non-root user for security
-    USER node
-    
-    EXPOSE 3000
-    
-    # The command to start the application
-    CMD [ "npm", "start" ]
+# 2. Switch to the root user to install project dependencies.
+USER root
+
+# 3. Set the working directory.
+WORKDIR /app
+
+# The ENV var below prevents npm from trying to re-download Chromium.
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
+# 4. Copy your package files.
+COPY package*.json ./
+
+# 5. Install ALL dependencies (including devDependencies like typescript).
+RUN npm install
+
+# 6. Copy the rest of your application code.
+COPY . .
+
+# 7. Build your TypeScript project. Now `tsc` will be found.
+RUN npm run build
+
+# 8. Prune dev dependencies AFTER the build is successful to shrink the final image.
+RUN npm prune --production
+
+# 9. Switch back to the non-root user for security.
+USER pptruser
+
+# 10. Expose the application port.
+EXPOSE 3000
+
+# 11. Define the command to start your app.
+CMD [ "npm", "start" ]

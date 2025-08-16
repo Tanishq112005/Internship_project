@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer-core';
+import puppeteer from 'puppeteer';
 
 export async function scrapping(req: any, res: any, next: any) {
     // extracting thr url from the body
@@ -19,9 +19,7 @@ export async function scrapping(req: any, res: any, next: any) {
           '--disable-gpu'
         ]
       };
-      if (process.env.PUPPETEER_EXECUTABLE_PATH) {
-        launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
-      }
+     
       
     try {
         browser = await puppeteer.launch(launchOptions);
