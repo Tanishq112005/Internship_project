@@ -8,9 +8,6 @@ export async function scrapping(req : any , res : any ){
       // using the library axios for his 
       const response = await axios.get<string>(url, {
         timeout: 8000,
-        headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
     });
 
        // now in the response.data , html of the page is there 
