@@ -1,36 +1,30 @@
-# Use a specific version of Node.js
 FROM node:20-slim
 
-# Install system dependencies needed for Chrome
-# Grouping RUN commands reduces image layers
+# 1. Install system dependencies for Chrome and wget
 RUN apt-get update && \
     apt-get install -y \
     wget \
-    gnupg \
-    # Dependencies for Chrome
-    libxshmfence-dev \
-    libgbm-dev \
-    libnss3 \
-    libxss1 \
-    libasound2 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libgtk-3-0 \
-    libdrm2 \
-    xdg-utils \
+    # List of dependencies required by Chrome
+    libnss3 libgtk-3-0 libxss1 libasound2 libatk-bridge2.0-0 libcups2 libdrm2 libgbm-dev libxshmfence-dev \
     --no-install-recommends && \
-    # Download and install Google Chrome
-    wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor > /etc/apt/keyrings/google-chrome.gpg && \
-    echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
-    apt-get update && \
-    apt-get install -y google-chrome-stable --no-install-recommends && \
-    # Clean up to reduce image size
+    # 2. Download the official Google Chrome .deb package
+    wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
+    # 3. Install the package using apt. Apt will handle any missing sub-dependencies.
+    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
+    # 4. Clean up to reduce final image size
+    rm google-chrome-stable_current_amd64.deb && \
     rm -rf /var/lib/apt/lists/*
 
-# Set the working directory
+# Set environment variables for Puppeteer
+# This tells Puppeteer where to find the browser we just installed.
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/google-chrome
+# This is a crucial optimization: it prevents "npm install" from downloading
+# its own copy of Chromium, saving hundreds of MBs and build time.
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+
 WORKDIR /app
 
-# Copy package files and install ALL dependencies (including dev for building)
+# Copy package files and install ALL dependencies needed for the build
 COPY package*.json ./
 RUN npm install
 
@@ -43,11 +37,10 @@ RUN npm run build
 # Remove development dependencies to make the final image smaller
 RUN npm prune --production
 
-# Switch to a non-root user for security
+# Switch to a non-root user for better security
 USER node
 
-# Expose the port your application will run on
 EXPOSE 3000
 
-# The command to start your application
+# Command to start the application
 CMD [ "npm", "start" ]
