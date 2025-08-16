@@ -11,7 +11,7 @@ function buildPrompt(description : string): string {
 }
 
 async function ai_testing(req: any, res: any , next : any) {
-  const {brandName , description} = req.body;
+  const {url , brandName , description} = req.body;
 
   if (!brandName || !description ) {
     return res.status(400).json({ msg: "Missing 'description' or 'brand_name' in request body." });
@@ -30,10 +30,11 @@ async function ai_testing(req: any, res: any , next : any) {
     
     const resultText = response.text?.trim() || "AI did not provide a valid response.";
     req.body = {
+        url : url , 
         brandName : brandName , 
         description : resultText 
     } ; 
-    
+
     next() ; 
 
   } catch (err: any) {
