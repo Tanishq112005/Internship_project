@@ -1,0 +1,1 @@
+export const database_connection_string = "postgresql://neondb_owner:npg_OPH1jDCLx0NU@ep-autumn-credit-a11aldos-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
