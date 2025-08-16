@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.scrapping = scrapping;
-const puppeteer_1 = __importDefault(require("puppeteer"));
+const puppeteer_core_1 = __importDefault(require("puppeteer-core"));
 function scrapping(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         var _a, _b;
@@ -38,7 +38,7 @@ function scrapping(req, res, next) {
             launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
         }
         try {
-            browser = yield puppeteer_1.default.launch(launchOptions);
+            browser = yield puppeteer_core_1.default.launch(launchOptions);
             const page = yield browser.newPage();
             page.on('console', msg => {
                 console.log(`[Browser Console] ${msg.text()}`);

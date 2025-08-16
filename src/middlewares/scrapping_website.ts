@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 
 export async function scrapping(req: any, res: any, next: any) {
     // extracting thr url from the body
