@@ -10,7 +10,7 @@ function buildPrompt(description : string): string {
   return `You Have to enhance the given description into more detailed and more readable format the given descrpition is ${description}`;
 }
 
-async function ai_testing(req: any, res: any) {
+async function ai_testing(req: any, res: any , next : any) {
   const {brandName , description} = req.body;
 
   if (!brandName || !description ) {
@@ -29,7 +29,12 @@ async function ai_testing(req: any, res: any) {
     });
     
     const resultText = response.text?.trim() || "AI did not provide a valid response.";
-    return res.json({ result: resultText });
+    req.body = {
+        brandName : brandName , 
+        description : resultText 
+    } ; 
+    
+    next() ; 
 
   } catch (err: any) {
     console.error("GenAI error:", err);
