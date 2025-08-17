@@ -129,14 +129,15 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
       "url": "https://www.example.com"
     }
     ```
--   **Example `curl` Request**:
-    ```bash
-    curl -X POST \
-      https://internship-project-xw6m.onrender.com/analyizer \
-      -H 'Content-Type: application/json' \
-      -d '{
-        "url": "https://www.typescriptlang.org/"
-      }'
+-   **Example `Postman` Request**:
+    ```
+    \\ in your postman set 
+    POST https://internship-project-xw6m.onrender.com/analyizer 
+
+    And in the body set the raw data : 
+    {
+      "url" : "link_you_want_webscrapped"
+    }
     ```
 
 ### 2. Get All Website Data
@@ -144,9 +145,10 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
 -   **Endpoint**: `/website_data`
 -   **Method**: `GET`
 -   **Description**: Retrieves all the website data that has been stored in the database.
--   **Example `curl` Request**:
-    ```bash
-    curl -X GET https://internship-project-xw6m.onrender.com/website_data
+-   **Example `Postman` Request**:
+    ```
+     GET https://internship-project-xw6m.onrender.com/website_data
+
     ```
 
 ### 3. Update Website Data
@@ -157,17 +159,19 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
 -   **Request Body**:
     ```json
     {
-      "url": "https://www.new-url-for-same-entry.com"
-    }
+      "url": "https://www.new-url-for-same-entry.com" , 
+      "brand_name" : "name_you_want_to_change" , 
+      "description" : "description you want to change for the website" 
+     }
+
+     // you can provide any one of the data from the given three values also , but there should we atleast one data 
     ```
--   **Example `curl` Request**:
-    ```bash
-    curl -X PUT \
-      https://internship-project-xw6m.onrender.com/update_data/15 \
-      -H 'Content-Type: application/json' \
-      -d '{
-        "url": "https://www.typescriptlang.org/play"
-      }'
+-   **Example `Postman` Request**:
+    ```
+      PUT https://internship-project-xw6m.onrender.com/update_data/15
+
+      // in the last always enter the key which you want to update 
+    
     ```
 
 ### 4. Delete Website Data
@@ -175,9 +179,11 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
 -   **Endpoint**: `/delete_data/:id`
 -   **Method**: `DELETE`
 -   **Description**: Deletes a specific website data entry from the database using its `id`.
--   **Example `curl` Request**:
-    ```bash
-    curl -X DELETE https://internship-project-xw6m.onrender.com/delete_data/14
+-   **Example `Postman` Request**:
+    ```
+     DELETE https://internship-project-xw6m.onrender.com/delete_data/14
+
+      // in the last always enter the key which you want to delete  
     ```
 
 ---
