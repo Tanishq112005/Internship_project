@@ -58,9 +58,9 @@ You can run this project locally or using Docker.
 
     ```env
     # .env
-    SUPABASE_URL=YOUR_SUPABASE_PROJECT_URL
-    SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_PUBLIC_KEY
-    GEMINI_API_KEY=YOUR_GOOGLE_GEMINI_API_KEY
+    url=YOUR_SUPABASE_PROJECT_URL
+    public_key=YOUR_SUPABASE_ANON_PUBLIC_KEY
+    google_key_KEY=YOUR_GOOGLE_GEMINI_API_KEY
     ```
 
 4.  **Run the application:**
@@ -108,9 +108,9 @@ These variables are required for the application to function correctly. Place th
 
 | Variable            | Description                                                               | Example                                    |
 | ------------------- | ------------------------------------------------------------------------- | ------------------------------------------ |
-| `SUPABASE_URL`      | The unique URL for your Supabase project's API.                           | `https://xyz.supabase.co`                  |
-| `SUPABASE_ANON_KEY` | The public "anon" key for your Supabase project. Used for client-side access. | `ey...`                                    |
-| `GEMINI_API_KEY`    | Your API key for the Google Gemini service from Google AI Studio.         | `AIza...`                                  |
+| `url`      | The unique URL for your Supabase project's API.                           | `https://xyz.supabase.co`                  |
+| `public_key` | The public "anon" key for your Supabase project. Used for client-side access. | `ey...`                                    |
+| `google_key`    | Your API key for the Google Gemini service from Google AI Studio.         | `AIza...`                                  |
 
 ---
 
