@@ -130,7 +130,7 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
     }
     ```
 -   **Example `Postman` Request**:
-    ```
+    ```json
     POST https://internship-project-xw6m.onrender.com/analyizer 
 
     And in the body set the raw data : 
@@ -145,7 +145,7 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
 -   **Method**: `GET`
 -   **Description**: Retrieves all the website data that has been stored in the database.
 -   **Example `Postman` Request**:
-    ```
+    ```bash
      GET https://internship-project-xw6m.onrender.com/website_data
 
     ```
@@ -166,7 +166,7 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
       you can provide any one of the data from the given three values also , but there should we atleast one data 
     ```
 -   **Example `Postman` Request**:
-    ```
+    ```bash
       PUT https://internship-project-xw6m.onrender.com/update_data/15
 
        in the last always enter the key which you want to update 
@@ -179,7 +179,7 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
 -   **Method**: `DELETE`
 -   **Description**: Deletes a specific website data entry from the database using its `id`.
 -   **Example `Postman` Request**:
-    ```
+    ```bash
      DELETE https://internship-project-xw6m.onrender.com/delete_data/14
 
        in the last always enter the key which you want to delete  
