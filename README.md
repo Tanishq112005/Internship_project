@@ -130,10 +130,10 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
     }
     ```
 -   **Example `Postman` Request**:
-    ```json
+    ```bash
     POST https://internship-project-xw6m.onrender.com/analyizer 
-
-    // And in the body set the raw data : 
+    ```
+    ```json
     {
       "url" : "link_you_want_webscrapped"
     }
