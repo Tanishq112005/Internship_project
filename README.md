@@ -131,7 +131,6 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
     ```
 -   **Example `Postman` Request**:
     ```
-    \\ in your postman set 
     POST https://internship-project-xw6m.onrender.com/analyizer 
 
     And in the body set the raw data : 
@@ -164,13 +163,13 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
       "description" : "description you want to change for the website" 
      }
 
-     // you can provide any one of the data from the given three values also , but there should we atleast one data 
+      you can provide any one of the data from the given three values also , but there should we atleast one data 
     ```
 -   **Example `Postman` Request**:
     ```
       PUT https://internship-project-xw6m.onrender.com/update_data/15
 
-      // in the last always enter the key which you want to update 
+       in the last always enter the key which you want to update 
     
     ```
 
@@ -183,7 +182,7 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
     ```
      DELETE https://internship-project-xw6m.onrender.com/delete_data/14
 
-      // in the last always enter the key which you want to delete  
+       in the last always enter the key which you want to delete  
     ```
 
 ---
