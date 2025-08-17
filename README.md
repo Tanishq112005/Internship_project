@@ -123,6 +123,7 @@ The base URL for the deployed API is: `https://internship-project-xw6m.onrender.
 -   **Endpoint**: `/analyizer`
 -   **Method**: `POST`
 -   **Description**: Scrapes a new website, enhances its data with AI, and saves it to the database.
+-   **Important Point**: If the website you entered has already been scraped, a message will appear saying: ‘This website has already been scraped
 -   **Request Body**:
     ```json
     {
